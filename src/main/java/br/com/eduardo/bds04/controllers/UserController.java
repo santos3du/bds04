@@ -2,6 +2,8 @@ package br.com.eduardo.bds04.controllers;
 
 import java.net.URI;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,44 +18,45 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import br.com.eduardo.bds04.dto.CityDTO;
-import br.com.eduardo.bds04.dto.EventDTO;
-import br.com.eduardo.bds04.services.CityService;
-import br.com.eduardo.bds04.services.EventService;
+import br.com.eduardo.bds04.dto.UserDTO;
+import br.com.eduardo.bds04.dto.UserInsertDTO;
+import br.com.eduardo.bds04.dto.UserUpdateDTO;
+import br.com.eduardo.bds04.services.UserService;
 
 @RestController
-@RequestMapping("/events")
-public class EventController {
+@RequestMapping("/users")
+public class UserController {
 	@Autowired
-	private EventService service;
+	private UserService service;
 	
 	@GetMapping
-	public ResponseEntity<Page<EventDTO>> findAllPaged(Pageable pageable) {
-		Page<EventDTO> list = service.findAll(pageable);
+	public ResponseEntity<Page<UserDTO>> findAll(Pageable pageable) {
+		Page<UserDTO> list = service.findAll(pageable);
 		return ResponseEntity.ok().body(list);
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<EventDTO> findByIdP( @PathVariable Long id ) {
-		EventDTO dto = service.findById(id);
+	public ResponseEntity<UserDTO> findById( @PathVariable Long id ) {
+		UserDTO dto = service.findById(id);
 		return ResponseEntity.ok().body(dto);
 	}
 	
 	@PostMapping
-	public ResponseEntity<EventDTO> insert(@RequestBody EventDTO dto) {
-		dto = service.insert(dto);
+	public ResponseEntity<UserDTO> insert(@Valid @RequestBody UserInsertDTO dto) {
+		UserDTO newDto = service.insert(dto);
+		
 		URI uri = ServletUriComponentsBuilder
 				.fromCurrentRequest()
 				.path("/{id}")
-				.buildAndExpand(dto.getId())
+				.buildAndExpand(newDto.getId())
 				.toUri();
-		return ResponseEntity.created(uri).body(dto);
+		return ResponseEntity.created(uri).body(newDto);
 	}
 	
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<EventDTO> update(@PathVariable Long id, EventDTO dto) {
-		dto = service.update(id, dto);
-		return ResponseEntity.ok().body(dto);
+	public ResponseEntity<UserDTO> update(@PathVariable Long id, @Valid @RequestBody UserUpdateDTO dto) {
+		UserDTO userDTO = service.update(id, dto);
+		return ResponseEntity.ok().body(userDTO);
 	}
 	
 	@DeleteMapping("/{id}")

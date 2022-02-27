@@ -26,7 +26,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Table(name = "tb_user")
 public class User implements Serializable, UserDetails{
 
-	private static final long serialVersionUID = -7198970945598356260L;
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
