@@ -1,9 +1,11 @@
 package br.com.eduardo.bds04.controllers;
 
 import java.net.URI;
+import java.util.List;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,8 +28,8 @@ public class CityController {
 	private CityService service;
 	
 	@GetMapping
-	public ResponseEntity<Page<CityDTO>> findAllPaged(Pageable pageable) {
-		Page<CityDTO> list = service.findAll(pageable);
+	public ResponseEntity<List<CityDTO>> findAllPaged() {
+		List<CityDTO> list = service.findAll();
 		return ResponseEntity.ok().body(list);
 	}
 	
@@ -38,7 +40,7 @@ public class CityController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<CityDTO> insert(@RequestBody CityDTO dto) {
+	public ResponseEntity<CityDTO> insert(@Valid @RequestBody CityDTO dto) {
 		dto = service.insert(dto);
 		URI uri = ServletUriComponentsBuilder
 				.fromCurrentRequest()
@@ -49,7 +51,7 @@ public class CityController {
 	}
 	
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<CityDTO> update(@PathVariable Long id, CityDTO dto) {
+	public ResponseEntity<CityDTO> update(@PathVariable Long id, @Valid CityDTO dto) {
 		dto = service.update(id, dto);
 		return ResponseEntity.ok().body(dto);
 	}

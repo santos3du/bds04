@@ -31,7 +31,6 @@ public class User implements Serializable, UserDetails{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@NotBlank(message = "Campo requerido")
 	@Column(unique = true)
 	private String email;
 	

@@ -2,6 +2,8 @@ package br.com.eduardo.bds04.controllers;
 
 import java.net.URI;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,9 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import br.com.eduardo.bds04.dto.CityDTO;
 import br.com.eduardo.bds04.dto.EventDTO;
-import br.com.eduardo.bds04.services.CityService;
 import br.com.eduardo.bds04.services.EventService;
 
 @RestController
@@ -40,7 +40,7 @@ public class EventController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<EventDTO> insert(@RequestBody EventDTO dto) {
+	public ResponseEntity<EventDTO> insert(@Valid @RequestBody EventDTO dto) {
 		dto = service.insert(dto);
 		URI uri = ServletUriComponentsBuilder
 				.fromCurrentRequest()
@@ -51,7 +51,7 @@ public class EventController {
 	}
 	
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<EventDTO> update(@PathVariable Long id, EventDTO dto) {
+	public ResponseEntity<EventDTO> update(@PathVariable Long id, @Valid EventDTO dto) {
 		dto = service.update(id, dto);
 		return ResponseEntity.ok().body(dto);
 	}

@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 
 import br.com.eduardo.bds04.entities.User;
 
@@ -12,6 +13,7 @@ public class UserDTO implements Serializable {
     public final static long serialVersionUID = 1L;
     private Long id;
 
+    @NotBlank(message = "Campo requerido")
     @Email(message = "Entrar com e-mail válido")
     private String email;
 
